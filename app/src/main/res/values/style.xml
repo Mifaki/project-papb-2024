@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--This file is for custom font style ONLY -->
+
+    <!-- Regular-->
+    <style name="regular_xs">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="regular_sm">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="regular_base">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="regular_lg">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="regular_xl">
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Medium-->
+    <style name="medium_xs">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="medium_sm">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="medium_base">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="medium_lg">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="medium_xl">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Semibold-->
+    <style name="semibold_xs">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="semibold_sm">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="semibold_base">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="semibold_lg">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="semibold_xl">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Bold-->
+    <style name="bold_xs">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="bold_sm">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="bold_base">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="bold_lg">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="bold_xl">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>
