@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    tools:context=".listappointment">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btBackDesc"
+        android:layout_width="65dp"
+        android:layout_height="59dp"
+        android:clickable="true"
+        android:contentDescription="Back to Janji temu"
+        app:backgroundTint="#F5F5F5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04"
+        app:srcCompat="@drawable/download" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="99dp"
+        android:layout_height="29dp"
+        android:gravity="center_vertical"
+        android:text="Janji Temu"
+        android:textAppearance="@style/bold_sm"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.288"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.054" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="374dp"
+        android:layout_height="243dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="19dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="109dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="249dp"
+            android:gravity="center"
+            android:text="Jadwal Janji"
+            android:textAppearance="@style/bold_xs"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvJanji"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivDoctorApp" />
+
+        <ImageView
+            android:id="@+id/ivDoctorApp"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/roundedimg"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/image_38"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvRS"
+            android:layout_width="57dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="129dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center|start"
+            android:text="RS Depok"
+            android:textAppearance="@style/regular_base"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@+id/tvLokasi"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvSpesialis"
+            app:layout_constraintTop_toBottomOf="@+id/tvDokter" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="19dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="92dp"
+            app:layout_constraintBottom_toTopOf="@+id/btUbahJadwal"
+            app:layout_constraintEnd_toStartOf="@+id/tvLokasi"
+            app:layout_constraintStart_toEndOf="@+id/ivDoctorApp"
+            app:layout_constraintTop_toBottomOf="@+id/tvSpesialis"
+            app:srcCompat="@drawable/location" />
+
+        <TextView
+            android:id="@+id/tvSpesialis"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center|start"
+            android:text="Kucing |"
+            android:textAppearance="@style/regular_base"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@+id/imageView3"
+            app:layout_constraintEnd_toStartOf="@+id/tvRS"
+            app:layout_constraintStart_toEndOf="@+id/ivDoctorApp"
+            app:layout_constraintTop_toBottomOf="@+id/tvDokter" />
+
+        <TextView
+            android:id="@+id/tvDokter"
+            android:layout_width="89dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="147dp"
+            android:layout_marginBottom="6dp"
+            android:gravity="center|start"
+            android:text="drh. Hanni"
+            android:textAppearance="@style/bold_xs"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvRS"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/ivDoctorApp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLokasi"
+            android:layout_width="176dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="38dp"
+            android:layout_marginBottom="69dp"
+            android:gravity="start|top"
+            android:text="Jl. Margonda, Depok, Kec. Pancoran Mas, Jawa Barat 16424"
+            android:textAppearance="@style/regular_xs"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toTopOf="@+id/btUbahJadwal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/tvRS" />
+
+        <TextView
+            android:id="@+id/tvJanji"
+            android:layout_width="289dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="3dp"
+            android:gravity="center|start"
+            android:text="Senin 7 Februari 2045"
+            android:textAppearance="@style/regular_xs"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/btBayar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <Button
+            android:id="@+id/btBayar"
+            android:layout_width="111dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundedbt"
+            android:backgroundTint="#43A047"
+            android:padding="10dp"
+            android:text="Bayar"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btUbahJadwal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvJanji" />
+
+        <Button
+            android:id="@+id/btUbahJadwal"
+            android:layout_width="128dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/roundedbt"
+            android:backgroundTint="#039BE5"
+            android:text="Ubah Jadwal"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btBatal"
+            app:layout_constraintStart_toEndOf="@+id/btBayar"
+            app:layout_constraintTop_toBottomOf="@+id/tvJanji" />
+
+        <Button
+            android:id="@+id/btBatal"
+            android:layout_width="107dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="59dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/roundedbt"
+            android:backgroundTint="#E53935"
+            android:text="Batal"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btUbahJadwal"
+            app:layout_constraintTop_toBottomOf="@+id/tvLokasi" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
