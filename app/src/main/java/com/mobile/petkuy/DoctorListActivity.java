@@ -32,8 +32,8 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
         btBack = findViewById(R.id.btBack);
         svSearchBar = findViewById(R.id.svSearchBar);
-        doctorCardContainer = findViewById(R.id.doctor_card_container);
-        noResultsText = findViewById(R.id.no_results_text);
+        doctorCardContainer = findViewById(R.id.llCardContainer);
+        noResultsText = findViewById(R.id.tvNoResult);
 
         btBack.setOnClickListener(this);
 
@@ -88,19 +88,19 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             for (Doctor doctor : doctorList) {
                 CardView cardView = (CardView) LayoutInflater.from(this).inflate(R.layout.doctor_card, doctorCardContainer, false);
 
-                TextView doctorNameTextView = cardView.findViewById(R.id.tv_doctor_name);
+                TextView doctorNameTextView = cardView.findViewById(R.id.tvDoctorName);
                 doctorNameTextView.setText(doctor.getName());
 
-                ImageView doctorImageView = cardView.findViewById(R.id.imageView2);
+                ImageView doctorImageView = cardView.findViewById(R.id.ivDoctorPicture);
                 doctorImageView.setImageResource(doctor.getProfilePicture());
 
-                TextView petCategoryTextView = cardView.findViewById(R.id.tv_pet);
+                TextView petCategoryTextView = cardView.findViewById(R.id.tvPetCategory);
                 petCategoryTextView.setText(doctor.getPetCategory());
 
-                TextView hospitalTextView = cardView.findViewById(R.id.tv_hospital);
+                TextView hospitalTextView = cardView.findViewById(R.id.tvHospital);
                 hospitalTextView.setText(doctor.getHospital());
 
-                TextView addressTextView = cardView.findViewById(R.id.tv_address);
+                TextView addressTextView = cardView.findViewById(R.id.tvAddress);
                 addressTextView.setText(doctor.getAdresss());
 
                 doctorCardContainer.addView(cardView);

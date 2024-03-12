@@ -26,7 +26,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        btWelcome = findViewById(R.id.button);
+        btWelcome = findViewById(R.id.btWelcomeCard);
         btWelcome.setOnClickListener(this);
 
         TextView textView = findViewById(R.id.tvName);
@@ -54,10 +54,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         for (AppointmentHistory appointment : riwayatJanjiList) {
             CardView cardView = (CardView) LayoutInflater.from(this).inflate(R.layout.appointment_history_card, null);
 
-            TextView doctorNameTextView = cardView.findViewById(R.id.tv_doctor_name);
-            ImageView doctorImageView = cardView.findViewById(R.id.imageView2);
-            TextView petTextView = cardView.findViewById(R.id.tv_pet);
-            TextView hospitalTextView = cardView.findViewById(R.id.tv_hospital);
+            TextView doctorNameTextView = cardView.findViewById(R.id.tvDoctorName);
+            ImageView doctorImageView = cardView.findViewById(R.id.ivDoctorPicture);
+            TextView petTextView = cardView.findViewById(R.id.tvPetCategory);
+            TextView hospitalTextView = cardView.findViewById(R.id.tvHospitalAdress);
 
             doctorNameTextView.setText(appointment.getDoctorName());
             doctorImageView.setImageResource(appointment.getDoctorPicture());
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button) {
+        if (view.getId() == R.id.btWelcomeCard) {
             Intent intent = new Intent(HomeActivity.this, DoctorListActivity.class);
             startActivity(intent);
         }
