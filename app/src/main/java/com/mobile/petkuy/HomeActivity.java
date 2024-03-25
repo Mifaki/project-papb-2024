@@ -2,6 +2,8 @@ package com.mobile.petkuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,12 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mobile.petkuy.utils.SpacingItemDecoder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btWelcome;
+    private RecyclerView rvRiwayatJanji;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,23 +54,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         riwayatJanjiList.add(new AppointmentHistory("drh. Kim", R.drawable.doctor_2, "Kucing", "RS Keluarga Kita Tangerang, Banten"));
         riwayatJanjiList.add(new AppointmentHistory("drh. Anitamax", R.drawable.doctor_1, "Kucing", "RS Keluarga Kita Tangerang, Banten"));
 
-        LinearLayout linearLayout = findViewById(R.id.llHistoryCardContainer);
+        rvRiwayatJanji = findViewById(R.id.rvRiwayatJanji);
+        rvRiwayatJanji.setLayoutManager(new LinearLayoutManager(this));
+        SpacingItemDecoder itemDecorator = new SpacingItemDecoder(16);
+        rvRiwayatJanji.addItemDecoration(itemDecorator);
+        AppointmentHistoryAdapter adapter = new AppointmentHistoryAdapter(riwayatJanjiList);
+        rvRiwayatJanji.setAdapter(adapter);
 
-        for (AppointmentHistory appointment : riwayatJanjiList) {
-            CardView cardView = (CardView) LayoutInflater.from(this).inflate(R.layout.appointment_history_card, null);
-
-            TextView doctorNameTextView = cardView.findViewById(R.id.tvDoctorName);
-            ImageView doctorImageView = cardView.findViewById(R.id.ivDoctorPicture);
-            TextView petTextView = cardView.findViewById(R.id.tvPetCategory);
-            TextView hospitalTextView = cardView.findViewById(R.id.tvHospitalAdress);
-
-            doctorNameTextView.setText(appointment.getDoctorName());
-            doctorImageView.setImageResource(appointment.getDoctorPicture());
-            petTextView.setText(appointment.getPetCategory());
-            hospitalTextView.setText(appointment.getHospital());
-
-            linearLayout.addView(cardView);
-        }
     }
 
     @Override

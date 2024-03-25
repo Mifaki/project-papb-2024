@@ -105,25 +105,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cvWelcomeText" />
 
-    <ScrollView
-        android:id="@+id/svHistorySection"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRiwayatJanji"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHistorySection">
-
-        <LinearLayout
-            android:id="@+id/llHistoryCardContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:divider="@drawable/gap_16dp"
-            android:orientation="vertical"
-            android:showDividers="middle" />
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/tvHistorySection" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
