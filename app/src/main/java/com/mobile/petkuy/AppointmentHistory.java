@@ -1,20 +1,26 @@
 package com.mobile.petkuy;
 
 public class AppointmentHistory {
-    private String doctorName;
+    private int id;
+    private String doctor_name;
     private int doctorPicture;
-    private String petCategory;
-    private String hospital;
+    private String doctor_category;
+    private String doctor_hospital_address;
 
-    public AppointmentHistory(String doctorName, int doctorPicture, String petCategory, String hospital) {
-        this.doctorName = doctorName;
-        this.petCategory = petCategory;
-        this.hospital = hospital;
+    public AppointmentHistory(int id, String doctorName, String petCategory, String hospital, int doctorPicture) {
+        this.id = id;
+        this.doctor_name = doctorName;
+        this.doctor_category = petCategory;
+        this.doctor_hospital_address = hospital;
         this.doctorPicture = doctorPicture;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getDoctorName() {
-        return doctorName;
+        return doctor_name;
     }
 
     public int getDoctorPicture() {
@@ -22,15 +28,19 @@ public class AppointmentHistory {
     }
 
     public String getPetCategory() {
-        return petCategory;
+        return doctor_category;
     }
 
     public String getHospital() {
-        return hospital;
+        return doctor_hospital_address;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
+        this.doctor_name = doctorName;
     }
 
     public void setDoctorPicture(int doctorPicture) {
@@ -38,10 +48,10 @@ public class AppointmentHistory {
     }
 
     public void setPetCategory(String petCategory) {
-        this.petCategory = petCategory;
+        this.doctor_category = petCategory;
     }
 
     public void setHospital(String hospital) {
-        this.hospital = hospital;
+        this.doctor_hospital_address = hospital;
     }
 }

@@ -2,28 +2,43 @@ package com.mobile.petkuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.mobile.petkuy.utils.SpacingItemDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 
 public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton btBack;
     private SearchView svSearchBar;
-    private LinearLayout doctorCardContainer;
+    private RecyclerView recyclerView;
     private TextView noResultsText;
-    private List<Doctor> doctorList;
     private List<Doctor> filteredDoctorList;
+    private List<Doctor> doctorList;
+    private DoctorListAdapter doctorListAdapter;
+
+    interface doctorRequest {
+        @GET("/Doctor/read.php")
+        Call<List<Doctor>> getDoctor();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +47,42 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
 
         btBack = findViewById(R.id.btBack);
         svSearchBar = findViewById(R.id.svSearchBar);
-        doctorCardContainer = findViewById(R.id.llCardContainer);
         noResultsText = findViewById(R.id.tvNoResult);
+        recyclerView  = findViewById(R.id.rvDoctorContainer);
 
         btBack.setOnClickListener(this);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8000/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        doctorList = new ArrayList<>();
-        doctorList.add(new Doctor("drh. Ava Tar", R.drawable.doctor_3, "Kucing", "RSUB", "Jl. Soekarno Hatta, Lowokwaru, Kec. Lowokwaru, Kota Malang"));
-        doctorList.add(new Doctor("drh. Hanni", R.drawable.doctor_4, "Kucing", "RS Depok", "JL. Margonda, Depok, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16424"));
-        doctorList.add(new Doctor("drh. M. Zuko", R.drawable.doctor_5, "Hewan Ternak", "RS Depok", "JL. Margonda, Depok, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16424"));
-        doctorList.add(new Doctor("drh. Sana", R.drawable.doctor_6, "Ayam", "RS Depok", "JL. Margonda, Depok, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16424"));
-        doctorList.add(new Doctor("drh. Gen", R.drawable.doctor_7, "Hewan Ternak", "RS Depok", "JL. Margonda, Depok, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16424"));
-        doctorList.add(new Doctor("drh. Ava Tar", R.drawable.doctor_3, "Kucing", "RSUB", "Jl. Soekarno Hatta, Lowokwaru, Kec. Lowokwaru, Kota Malang"));
-        doctorList.add(new Doctor("drh. Hanni", R.drawable.doctor_4, "Kucing", "RS Depok", "JL. Margonda, Depok, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16424"));
-        doctorList.add(new Doctor("drh. M. Zuko", R.drawable.doctor_5, "Hewan Ternak", "RS Depok", "JL. Margonda, Depok, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16424"));
+        DoctorListActivity.doctorRequest apicall = retrofit.create(DoctorListActivity.doctorRequest.class);
 
-        filteredDoctorList = new ArrayList<>(doctorList);
-        populateDoctorCards(filteredDoctorList);
+        filteredDoctorList = new ArrayList<>();
+        doctorListAdapter = new DoctorListAdapter(filteredDoctorList);
+
+        apicall.getDoctor().enqueue(new Callback<List<Doctor>>(){
+            @Override
+            public void onResponse(Call<List<Doctor>> call, Response<List<Doctor>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    doctorList = response.body();
+                    filteredDoctorList.addAll(doctorList);
+                    doctorListAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(DoctorListActivity.this, "Response kosong atau terjadi kesalahan", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Doctor>> call, Throwable t) {
+                Toast.makeText(DoctorListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new SpacingItemDecoder(16));
+        recyclerView.setAdapter(doctorListAdapter);
 
         svSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -70,42 +103,17 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
                     }
                 }
 
-                populateDoctorCards(filteredDoctorList);
+                doctorListAdapter.notifyDataSetChanged();
+
+                if (filteredDoctorList.isEmpty()) {
+                    noResultsText.setVisibility(View.VISIBLE);
+                } else {
+                    noResultsText.setVisibility(View.GONE);
+                }
 
                 return true;
             }
         });
-    }
-
-    private void populateDoctorCards(List<Doctor> doctorList) {
-        doctorCardContainer.removeAllViews();
-
-        if (doctorList.isEmpty()) {
-            noResultsText.setVisibility(TextView.VISIBLE);
-        } else {
-            noResultsText.setVisibility(TextView.GONE);
-
-            for (Doctor doctor : doctorList) {
-                CardView cardView = (CardView) LayoutInflater.from(this).inflate(R.layout.doctor_card, doctorCardContainer, false);
-
-                TextView doctorNameTextView = cardView.findViewById(R.id.tvDoctorName);
-                doctorNameTextView.setText(doctor.getName());
-
-                ImageView doctorImageView = cardView.findViewById(R.id.ivDoctorPicture);
-                doctorImageView.setImageResource(doctor.getProfilePicture());
-
-                TextView petCategoryTextView = cardView.findViewById(R.id.tvPetCategory);
-                petCategoryTextView.setText(doctor.getPetCategory());
-
-                TextView hospitalTextView = cardView.findViewById(R.id.tvHospital);
-                hospitalTextView.setText(doctor.getHospital());
-
-                TextView addressTextView = cardView.findViewById(R.id.tvAddress);
-                addressTextView.setText(doctor.getAdresss());
-
-                doctorCardContainer.addView(cardView);
-            }
-        }
     }
 
     @Override

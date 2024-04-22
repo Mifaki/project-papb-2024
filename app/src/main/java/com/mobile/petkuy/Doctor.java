@@ -1,18 +1,24 @@
 package com.mobile.petkuy;
 
 public class Doctor {
+    private int id;
     private String name;
     private int profilePicture;
-    private String petCategory;
-    private String hospital;
-    private String adresss;
+    private String category;
+    private String hospital_name;
+    private String hospital_address;
 
-    public Doctor(String name, int profilePicture, String petCategory, String hospital, String address) {
+    public Doctor(int id, String name, int profilePicture, String petCategory, String hospital, String address) {
+        this.id = id;
         this.name = name;
         this.profilePicture = profilePicture;
-        this.petCategory = petCategory;
-        this.hospital = hospital;
-        this.adresss = address;
+        this.category = petCategory;
+        this.hospital_name = hospital;
+        this.hospital_address = address;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -24,15 +30,19 @@ public class Doctor {
     }
 
     public String getPetCategory() {
-        return petCategory;
+        return category;
     }
 
     public String getHospital() {
-        return hospital;
+        return hospital_name;
     }
 
     public String getAdresss() {
-        return adresss;
+        return hospital_address;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -44,14 +54,14 @@ public class Doctor {
     }
 
     public void setPetCategory(String petCategory) {
-        this.petCategory = petCategory;
+        this.category = petCategory;
     }
 
     public void setHospital(String hospital) {
-        this.hospital = hospital;
+        this.hospital_name = hospital;
     }
 
     public void setAdresss(String adresss) {
-        this.adresss = adresss;
+        this.hospital_address = adresss;
     }
 }
