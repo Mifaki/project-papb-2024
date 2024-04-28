@@ -26,6 +26,24 @@
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.PetKuy" />
         <activity
+            android:name=".listsAppointment"
+            android:exported="true" />
+        <activity
+            android:name=".appAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".doctorsAppointment"
+            android:exported="true" />
+        <activity
+            android:name=".PembayaranActivity"
+            android:exported="true" />
+        <activity
+            android:name=".KonfirmasiPembayaranActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PembayaranBerhasil"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
