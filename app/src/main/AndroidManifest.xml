@@ -15,6 +15,17 @@
         android:theme="@style/Theme.PetKuy"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
+
+        <activity
+            android:name=".BatalJanji"
+            android:exported="true"
+            android:label="BatalJanji"
+            />
+        <activity
+            android:name=".konfirmasi"
+            android:exported="true"
+            android:label="konfirmasi"
+            />
         <activity
             android:name=".DoctorListActivity"
             android:exported="true"
@@ -29,11 +40,11 @@
             android:name=".listsAppointment"
             android:exported="true" />
         <activity
-            android:name=".appAdapter"
-            android:exported="false" />
-        <activity
             android:name=".doctorsAppointment"
             android:exported="true" />
+        <activity
+            android:name=".appAdapter"
+            android:exported="false" />
         <activity
             android:name=".PembayaranActivity"
             android:exported="true" />

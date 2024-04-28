@@ -37,6 +37,7 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView tvSelectedDate;
         private final ImageView DoctorApp;
         private final Button btBayar;
+        private final Button btBatal;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -47,10 +48,12 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.tvLokasi = itemView.findViewById(R.id.tvLokasi);
             this.tvJanji = itemView.findViewById(R.id.tvJanji);
             this.btBayar = itemView.findViewById(R.id.btBayar);
+            this.btBatal = itemView.findViewById(R.id.btBatal);
             this.tvSelectedDate = itemView.findViewById(R.id.tvJanji);
             itemView.setOnClickListener(this);
             btUbah.setOnClickListener(this);
             btBayar.setOnClickListener(this);
+            btBatal.setOnClickListener(this);
         }
 
         @Override
@@ -115,6 +118,14 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Intent intent = new Intent(context, PembayaranActivity.class);
             context.startActivity(intent);
         }));
+
+        vh.btBatal.setOnClickListener((v -> {
+            Intent intent = new Intent(context, BatalJanji.class);
+            context.startActivity(intent);
+
+            // Perform action on button click
+        }));
+
     }
 
 
