@@ -10,14 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentHistoryAdapter.ViewHolder> {
 
     private List<AppointmentHistory> riwayatJanjiList;
 
-    public AppointmentHistoryAdapter(List<AppointmentHistory> riwayatJanjiList) {
-        this.riwayatJanjiList = riwayatJanjiList;
+    public AppointmentHistoryAdapter() {
+        this.riwayatJanjiList = new ArrayList<>();
+    }
+
+    public void setData(List<AppointmentHistory> appointmentHistories) {
+        this.riwayatJanjiList = appointmentHistories;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -31,9 +37,9 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentH
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AppointmentHistory riwayatJanji = riwayatJanjiList.get(position);
         holder.doctorImageView.setImageResource(R.drawable.doctor_1);
-        holder.doctorNameTextView.setText(riwayatJanji.getDoctorName());
-        holder.petTextView.setText(riwayatJanji.getPetCategory());
-        holder.hospitalTextView.setText(riwayatJanji.getHospital());
+        holder.doctorNameTextView.setText(riwayatJanji.getDoctor_name());
+        holder.petTextView.setText(riwayatJanji.getDoctor_category());
+        holder.hospitalTextView.setText(riwayatJanji.getDoctor_hospital_address());
     }
 
     @Override
