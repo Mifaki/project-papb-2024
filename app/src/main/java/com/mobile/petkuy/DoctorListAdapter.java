@@ -16,8 +16,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
 
     private List<Doctor> doctorList;
 
-    public DoctorListAdapter() {
-        this.doctorList = new ArrayList<>();
+    public DoctorListAdapter(List<Doctor> doctorList) {
+        this.doctorList = doctorList;
     }
 
     public void setData(List<Doctor> doctorList) {
