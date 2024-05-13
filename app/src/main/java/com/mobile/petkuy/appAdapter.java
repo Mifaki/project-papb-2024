@@ -50,6 +50,8 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             btBayar.setOnClickListener(this);
         }
 
+
+
         @Override
         public void onClick(View v) {
             listener.onItemClicked(getAdapterPosition(), v);
