@@ -9,14 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ViewHolder> {
 
     private List<Doctor> doctorList;
 
-    public DoctorListAdapter(List<Doctor> doctorList) {
+    public DoctorListAdapter() {
+        this.doctorList = new ArrayList<>();
+    }
+
+    public void setData(List<Doctor> doctorList) {
         this.doctorList = doctorList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -53,9 +59,9 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
         public void bind(Doctor doctor) {
             doctorNameTextView.setText(doctor.getName());
             doctorImageView.setImageResource(R.drawable.doctor_4);
-            petCategoryTextView.setText(doctor.getPetCategory());
-            hospitalTextView.setText(doctor.getHospital());
-            addressTextView.setText(doctor.getAdresss());
+            petCategoryTextView.setText(doctor.getCategory());
+            hospitalTextView.setText(doctor.getHospital_name());
+            addressTextView.setText(doctor.getHospital_address());
         }
     }
 }
