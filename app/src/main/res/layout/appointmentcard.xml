@@ -123,12 +123,12 @@
         android:backgroundTint="#039BE5"
         android:text="Ubah Jadwal"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/btBatal"
+        app:layout_constraintEnd_toStartOf="@+id/btLihatDaftar"
         app:layout_constraintStart_toEndOf="@+id/btBayar"
         app:layout_constraintTop_toTopOf="@+id/btBayar" />
 
     <Button
-        android:id="@+id/btBatal"
+        android:id="@+id/btLihatDaftar"
         android:layout_width="79dp"
         android:layout_height="48dp"
         android:background="@drawable/roundedbt"

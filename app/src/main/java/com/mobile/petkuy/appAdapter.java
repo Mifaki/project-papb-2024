@@ -48,7 +48,7 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.tvLokasi = itemView.findViewById(R.id.tvLokasi);
             this.tvJanji = itemView.findViewById(R.id.tvJanji);
             this.btBayar = itemView.findViewById(R.id.btBayar);
-            this.btBatal = itemView.findViewById(R.id.btBatal);
+            this.btBatal = itemView.findViewById(R.id.btLihatDaftar);
             this.tvSelectedDate = itemView.findViewById(R.id.tvJanji);
             itemView.setOnClickListener(this);
             btUbah.setOnClickListener(this);
