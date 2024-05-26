@@ -6,53 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".BatalJanji">
 
-    <EditText
-        android:id="@+id/etAlasan"
-        android:layout_width="334dp"
-        android:layout_height="46dp"
-        android:ems="10"
-        android:fontFamily="@font/rubik_medium"
-        android:hint="Alasan"
-        android:inputType="text"
-        android:textColorHighlight="#000000"
-        android:textColorLink="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.194"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.218" />
+    <fragment
+        android:id="@+id/fragmentbatal"
 
-    <Button
-        android:id="@+id/btBatal"
-        android:layout_width="380dp"
-        android:layout_height="56dp"
-        android:background="@drawable/roundstyle"
-        android:backgroundTint="#D92D20"
-        android:fontFamily="@font/rubik_medium"
-        android:text="Batalkan Janji Temu"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:layout_width="399dp"
+        android:layout_height="716dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="332dp"
-        android:layout_height="48dp"
-        android:fontFamily="@font/rubik_medium"
-        android:text="Yahh kenapa dibatalin?"
-        android:textColor="#3C3C3C"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.215"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
