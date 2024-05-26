@@ -177,100 +177,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Maps">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:paddingLeft="5dp"
-                android:paddingTop="9sp"
-                android:text="Pilih tanggal dan waktu kunjungan Februari"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:id="@+id/tvTgl1"
-                android:layout_width="82dp"
-                android:layout_height="54dp"
-                android:layout_marginVertical="33sp"
-                android:layout_marginLeft="10sp"
-                android:background="@drawable/roundedtx"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="Senin \n7"
-                android:textAppearance="@style/bold_sm"
-                android:textColor="@color/primary_700"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTgl2"
-                android:layout_width="82dp"
-                android:layout_height="54dp"
-                android:layout_marginVertical="33sp"
-                android:layout_marginLeft="106sp"
-                android:background="@drawable/roundedtx"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="Selasa \n8"
-                android:textAppearance="@style/bold_sm"
-                android:textColor="@color/primary_700"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTgl3"
-                android:layout_width="82dp"
-                android:layout_height="54dp"
-                android:layout_marginVertical="33sp"
-                android:layout_marginLeft="200sp"
-                android:background="@drawable/roundedtx"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="Rabu\n9"
-                android:textAppearance="@style/bold_sm"
-                android:textColor="@color/primary_700"
-                android:textIsSelectable="true"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTgl4"
-                android:layout_width="82dp"
-                android:layout_height="54dp"
-                android:layout_marginVertical="33sp"
-                android:layout_marginLeft="295sp"
-                android:background="@drawable/roundedtx"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="Kamis\n10"
-                android:textAppearance="@style/bold_sm"
-                android:textColor="@color/primary_700"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvJadwal"
-                android:layout_width="82sp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20sp"
-                android:layout_marginTop="95sp"
-                android:background="@drawable/roundedtx"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="15:00"
-                android:textAppearance="@style/bold_sm"
-                android:textColor="@color/primary_700" />
-
-            <TextView
-                android:id="@+id/tvJadwal2"
-                android:layout_width="82sp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="117sp"
-                android:layout_marginTop="95sp"
-                android:background="@drawable/roundedtx"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="15:30"
-                android:textAppearance="@style/bold_sm"
-                android:textColor="@color/primary_700" />
-
+        <TextView
+            android:id="@+id/string"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Fragment will be displayed here"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"/>
 
         </FrameLayout>
 

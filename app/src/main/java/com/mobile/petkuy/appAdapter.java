@@ -1,5 +1,6 @@
 package com.mobile.petkuy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,8 +34,10 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final TextView tvLokasi;
         private final TextView tvJanji;
         private final Button btUbah;
+        private TextView tvSelectedDate;
         private final ImageView DoctorApp;
         private final Button btBayar;
+        private final Button btBatal;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -45,9 +48,12 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.tvLokasi = itemView.findViewById(R.id.tvLokasi);
             this.tvJanji = itemView.findViewById(R.id.tvJanji);
             this.btBayar = itemView.findViewById(R.id.btBayar);
+            this.btBatal = itemView.findViewById(R.id.btLihatDaftar);
+            this.tvSelectedDate = itemView.findViewById(R.id.tvJanji);
             itemView.setOnClickListener(this);
             btUbah.setOnClickListener(this);
             btBayar.setOnClickListener(this);
+            btBatal.setOnClickListener(this);
         }
 
         @Override
@@ -83,7 +89,6 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // Create an intent to start the Checklist activity
             Intent intent = new Intent(context, doctorsAppointment.class);
             // Pass the extracted data to the Checklist activity using a Bundle
-
             Bundle bundle = new Bundle();
             bundle.putInt("IV_DOKTOR", ivDoktor);
             bundle.putString("DOCTOR", doktor);
@@ -94,12 +99,35 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             context.startActivity(intent);
         });
 
+        // Check if there is an intent and extras available
+        if (context instanceof Activity) {
+            Intent intent = ((Activity) context).getIntent();
+            Bundle extras = intent.getExtras();
 
+            if (extras != null) {
+                String selectedDate = intent.getStringExtra("selectedDate");
+                String selectedTime = intent.getStringExtra("selectedTime");
+                vh.tvSelectedDate.setText(selectedDate + " " + selectedTime);
+            } else {
+                // Clear text if no intent extras available
+                vh.tvSelectedDate.setText("");
+            }
+        }
 
         vh.btBayar.setOnClickListener((v -> {
-
+            Intent intent = new Intent(context, PembayaranActivity.class);
+            context.startActivity(intent);
         }));
+
+        vh.btBatal.setOnClickListener((v -> {
+            Intent intent = new Intent(context, BatalJanji.class);
+            context.startActivity(intent);
+
+            // Perform action on button click
+        }));
+
     }
+
 
     @Override
     public int getItemCount() {

@@ -1,13 +1,13 @@
 package com.mobile.petkuy;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +60,7 @@ public class listsAppointment extends AppCompatActivity{
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
+            this.data.indexOf(6);
             String selectedDate = intent.getStringExtra("selectedDate");
             String selectedTime = intent.getStringExtra("selectedTime");
             this.tvSelectedDate.setText(selectedDate + " " + selectedTime);
