@@ -1,37 +1,48 @@
 package com.mobile.petkuy;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "appoinment_history")
 public class AppointmentHistory {
+    @ColumnInfo(name="id")
+    @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "doctor_name")
     private String doctor_name;
-    private int doctorPicture;
+    @ColumnInfo(name = "doctor_picture")
+    private int doctor_picture;
+    @ColumnInfo(name = "doctor_category")
     private String doctor_category;
+    @ColumnInfo(name = "doctor_hospital_address")
     private String doctor_hospital_address;
 
-    public AppointmentHistory(int id, String doctorName, String petCategory, String hospital, int doctorPicture) {
+    public AppointmentHistory(int id, String doctor_name, String doctor_category, String doctor_hospital_address, int doctor_picture) {
         this.id = id;
-        this.doctor_name = doctorName;
-        this.doctor_category = petCategory;
-        this.doctor_hospital_address = hospital;
-        this.doctorPicture = doctorPicture;
+        this.doctor_name = doctor_name;
+        this.doctor_category = doctor_category;
+        this.doctor_hospital_address = doctor_hospital_address;
+        this.doctor_picture = doctor_picture;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getDoctorName() {
+    public String getDoctor_name() {
         return doctor_name;
     }
 
-    public int getDoctorPicture() {
-        return doctorPicture;
+    public int getDoctor_picture() {
+        return doctor_picture;
     }
 
-    public String getPetCategory() {
+    public String getDoctor_category() {
         return doctor_category;
     }
 
-    public String getHospital() {
+    public String getDoctor_hospital_address() {
         return doctor_hospital_address;
     }
 
@@ -39,19 +50,19 @@ public class AppointmentHistory {
         this.id = id;
     }
 
-    public void setDoctorName(String doctorName) {
-        this.doctor_name = doctorName;
+    public void setDoctor_name(String doctor_name) {
+        this.doctor_name = doctor_name;
     }
 
-    public void setDoctorPicture(int doctorPicture) {
-        this.doctorPicture = doctorPicture;
+    public void setDoctor_picture(int doctor_picture) {
+        this.doctor_picture = doctor_picture;
     }
 
-    public void setPetCategory(String petCategory) {
-        this.doctor_category = petCategory;
+    public void setDoctor_category(String doctor_category) {
+        this.doctor_category = doctor_category;
     }
 
-    public void setHospital(String hospital) {
-        this.doctor_hospital_address = hospital;
+    public void setDoctor_hospital_address(String doctor_hospital_address) {
+        this.doctor_hospital_address = doctor_hospital_address;
     }
 }

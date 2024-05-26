@@ -2,6 +2,7 @@ package com.mobile.petkuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +37,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Button btWelcome;
     private RecyclerView rvRiwayatJanji;
     private AppointmentHistoryAdapter riwayatJanjiAdapter;
-    interface historyRequest {
+    private List<AppointmentHistory> riwayatJanjiList;
+    private AppointmentHistoryRepository appointmentHistoryRepository;
+
+    interface HistoryRequest {
         @GET("/AppoinmentHistory/read.php")
-        Call<List<AppointmentHistory>> getAppoinmentHistory();
+        Call<List<AppointmentHistory>> getAppointmentHistory();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +65,45 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         spannableString.setSpan(new ForegroundColorSpan(momoColor), momoStartIndex, momoEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         textView.setText(spannableString);
 
+
+
+        riwayatJanjiList = new ArrayList<>();
+        riwayatJanjiAdapter = new AppointmentHistoryAdapter();
+
+        appointmentHistoryRepository = new AppointmentHistoryRepository(getApplication());
+        fetchDataAndInsertIntoSQLite();
+
+        appointmentHistoryRepository.getAllAppointmentHistory().observe(this, new Observer<List<AppointmentHistory>>() {
+            @Override
+            public void onChanged(List<AppointmentHistory> appointmentHistories) {
+                riwayatJanjiAdapter.setData(appointmentHistories);
+            }
+        });
+
+        rvRiwayatJanji = findViewById(R.id.rvRiwayatJanji);
+        rvRiwayatJanji.setLayoutManager(new LinearLayoutManager(this));
+        SpacingItemDecoder itemDecorator = new SpacingItemDecoder(16);
+        rvRiwayatJanji.addItemDecoration(itemDecorator);
+        riwayatJanjiAdapter = new AppointmentHistoryAdapter();
+        rvRiwayatJanji.setAdapter(riwayatJanjiAdapter);
+    }
+
+    private void fetchDataAndInsertIntoSQLite() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        historyRequest apicall = retrofit.create(historyRequest.class);
+        HistoryRequest historyRequest = retrofit.create(HistoryRequest.class);
 
-        List<AppointmentHistory> riwayatJanjiList = new ArrayList<>();
-        riwayatJanjiAdapter = new AppointmentHistoryAdapter(riwayatJanjiList);
-
-        apicall.getAppoinmentHistory().enqueue(new Callback<List<AppointmentHistory>>() {
+        historyRequest.getAppointmentHistory().enqueue(new Callback<List<AppointmentHistory>>() {
             @Override
             public void onResponse(Call<List<AppointmentHistory>> call, Response<List<AppointmentHistory>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    riwayatJanjiList.addAll(response.body());
-                    riwayatJanjiAdapter.notifyDataSetChanged();
+                    List<AppointmentHistory> appointmentHistories = response.body();
+                    for (AppointmentHistory history : appointmentHistories) {
+                        appointmentHistoryRepository.insert(history);
+                    }
                 } else {
                     Toast.makeText(HomeActivity.this, "Response kosong atau terjadi kesalahan", Toast.LENGTH_SHORT).show();
                 }
@@ -87,13 +114,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        rvRiwayatJanji = findViewById(R.id.rvRiwayatJanji);
-        rvRiwayatJanji.setLayoutManager(new LinearLayoutManager(this));
-        SpacingItemDecoder itemDecorator = new SpacingItemDecoder(16);
-        rvRiwayatJanji.addItemDecoration(itemDecorator);
-        rvRiwayatJanji.setAdapter(riwayatJanjiAdapter);
-
     }
 
     @Override
