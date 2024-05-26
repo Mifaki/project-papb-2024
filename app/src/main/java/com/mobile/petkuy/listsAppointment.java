@@ -1,6 +1,9 @@
 package com.mobile.petkuy;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +17,8 @@ public class listsAppointment extends AppCompatActivity{
 
     private List<appointmentModel> data;
     private RecyclerView rvAppointment;
+
+    private TextView tvSelectedDate;
     private appAdapter AA;
 
 
@@ -43,12 +48,23 @@ public class listsAppointment extends AppCompatActivity{
         RecyclerView.LayoutManager la = new LinearLayoutManager(listsAppointment.this, LinearLayoutManager.VERTICAL, false);
         this.rvAppointment.setLayoutManager(la);
         this.rvAppointment.setAdapter(AA);
+
+        View appointmentCardView = getLayoutInflater().inflate(R.layout.appointmentcard, null);
+        tvSelectedDate = appointmentCardView.findViewById(R.id.tvJanji);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Intent intent = this.getIntent();
+        Bundle extras = getIntent().getExtras();
 
+        if (extras != null) {
+            this.data.indexOf(6);
+            String selectedDate = intent.getStringExtra("selectedDate");
+            String selectedTime = intent.getStringExtra("selectedTime");
+            this.tvSelectedDate.setText(selectedDate + " " + selectedTime);
+        }
 
     }
 

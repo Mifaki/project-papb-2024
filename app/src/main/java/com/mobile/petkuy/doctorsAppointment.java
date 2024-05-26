@@ -3,6 +3,7 @@ package com.mobile.petkuy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class doctorsAppointment extends AppCompatActivity {
-
-    private TextView tvTgl1, tvTgl2, tvTgl3, tvTgl4;
-    private TextView tvJadwal1, tvJadwal2, tvDokter, tvSpesialis, tvJanji, tvLokasi;
+public class doctorsAppointment extends AppCompatActivity implements editAppointmentFragment.OnAppointmentItemSelectedListener {
+    protected static String state = null;
+    private TextView tvDokter, tvSpesialis, tvLokasi;
     private ImageView ivDoktor;
+    private FloatingActionButton btBack;
+    private Button btSend;
     private String selectedDate = "";
     private String selectedTime = "";
     private ImageLoader mImageLoader;
@@ -23,19 +26,15 @@ public class doctorsAppointment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checklist);
+        setContentView(R.layout.activity_doctorsdetail);
 
         // Inisialisasi TextViews
-        tvTgl1 = findViewById(R.id.tvTgl1);
-        tvTgl2 = findViewById(R.id.tvTgl2);
-        tvTgl3 = findViewById(R.id.tvTgl3);
-        tvTgl4 = findViewById(R.id.tvTgl4);
         tvDokter = findViewById(R.id.tvDoc);
         tvSpesialis = findViewById(R.id.tvSpesialis);
         tvLokasi = findViewById(R.id.tvLokasi);
-        tvJadwal1 = findViewById(R.id.tvJadwal);
-        tvJadwal2 = findViewById(R.id.tvJadwal2);
         ivDoktor = findViewById(R.id.ivDoktor);
+        btBack = findViewById(R.id.btBack);
+        btSend = findViewById(R.id.btSend);
 
         // Set up Volley request queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -45,102 +44,49 @@ public class doctorsAppointment extends AppCompatActivity {
         String imageUrl = "https://news.unair.ac.id/wp-content/uploads/2022/01/dokter-hewan.jpg";
         mImageLoader.loadImage(imageUrl, ivDoktor);
 
-        // Set listener klik untuk TextView Tgl
-        tvTgl1.setOnClickListener(new View.OnClickListener() {
+        // Check state to decide whether to show editAppointmentFragment
+        if (state != null) {
+            editAppointmentFragment editAppointmentFragment = new editAppointmentFragment();
+            editAppointmentFragment.setOnAppointmentItemSelectedListener(this); // Set this activity as the listener
+            getSupportFragmentManager().beginTransaction().add(R.id.flTanggal, editAppointmentFragment).commit();
+        }else {
+            btSend.setText("Buat Jadwal");
+        }
+
+        btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedDate = tvTgl1.getText().toString();
-                setShadowBackground(tvTgl1);
-                clearShadowBackground(tvTgl2, tvTgl3, tvTgl4);
+                Intent intent = new Intent(doctorsAppointment.this, listsAppointment.class);
+                state = "1";
+                startActivity(intent);
             }
         });
 
-        tvTgl2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedDate = tvTgl2.getText().toString();
-                setShadowBackground(tvTgl2);
-                clearShadowBackground(tvTgl1, tvTgl3, tvTgl4);
-            }
-        });
-
-        tvTgl3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedDate = tvTgl3.getText().toString();
-                setShadowBackground(tvTgl3);
-                clearShadowBackground(tvTgl1, tvTgl2, tvTgl4);
-            }
-        });
-
-        tvTgl4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedDate = tvTgl4.getText().toString();
-                setShadowBackground(tvTgl4);
-                clearShadowBackground(tvTgl1, tvTgl2, tvTgl3);
-            }
-        });
-
-// listener klik
-        tvJadwal1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedTime = tvJadwal1.getText().toString();
-                setShadowBackground(tvJadwal1);
-                clearShadowBackground(tvJadwal2);
-            }
-        });
-
-        tvJadwal2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedTime = tvJadwal2.getText().toString();
-                setShadowBackground(tvJadwal2);
-                clearShadowBackground(tvJadwal1);
-            }
-        });
-
-        findViewById(R.id.btSend).setOnClickListener(new View.OnClickListener() {
+        btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Remove '\n'
                 String formattedDate = selectedDate.replace("\n", "");
-
+                state = "1";
                 // Sending data
                 sendDataToAppointment(formattedDate, selectedTime);
             }
         });
-
     }
 
-
-
-// send data to appointment
-private void sendDataToAppointment(String formattedDate, String selectedTime) {
-    Intent intent = new Intent(doctorsAppointment.this, listsAppointment.class);
-    intent.putExtra("selectedDate", formattedDate);
-    intent.putExtra("selectedTime", selectedTime);
-    startActivity(intent);
-}
-
-
-    //set shadow background for TextView
-    private void setShadowBackground(TextView textView) {
-        // Set background for the provided textView
-        textView.setBackgroundResource(R.drawable.selected_background);
+    // Send data to appointment
+    private void sendDataToAppointment(String formattedDate, String selectedTime) {
+        Intent intent = new Intent(doctorsAppointment.this, listsAppointment.class);
+        intent.putExtra("selectedDate", formattedDate);
+        intent.putExtra("selectedTime", selectedTime);
+        startActivity(intent);
     }
 
-    //clear shadow background for all TextViews except the provided one
-    private void clearShadowBackground(TextView... textViews) {
-        for (TextView textView : textViews) {
-            // Check if the textView is not the provided one, then clear its background
-            if (textView != null) {
-                textView.setBackgroundResource(R.drawable.default_background);
-            }
-        }
+    @Overrideyauda
+    public void onAppointmentItemSelected(String selectedDate, String selectedTime) {
+        this.selectedDate = selectedDate;
+        this.selectedTime = selectedTime;
     }
-
 
     @Override
     protected void onResume() {
@@ -151,15 +97,10 @@ private void sendDataToAppointment(String formattedDate, String selectedTime) {
         if (intent != null) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-
-                // Menetapkan gambar dokter ke ImageView
-
-
                 // Mendapatkan nama dokter, spesialis, lokasi, dan janji
                 String doktor = bundle.getString("DOCTOR", "");
                 String spesialis = bundle.getString("SPESIALIS", "");
                 String lokasi = bundle.getString("LOKASI", "");
-                String janji = bundle.getString("JANJI", "");
                 int ivDoktorResource = bundle.getInt("IV_DOKTOR");
 
                 // Menetapkan nilai-nilai tersebut ke TextViews
@@ -168,9 +109,7 @@ private void sendDataToAppointment(String formattedDate, String selectedTime) {
                 tvLokasi.setText(lokasi);
                 // Set image resource to ImageView
                 ivDoktor.setImageResource(ivDoktorResource);
-    //                tvJanji.setText(janji);
             }
         }
     }
-
 }
