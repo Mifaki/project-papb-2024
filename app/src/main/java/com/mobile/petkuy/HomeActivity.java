@@ -37,10 +37,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private AppointmentHistoryAdapter riwayatJanjiAdapter;
     private List<AppointmentHistory> riwayatJanjiList;
     private FirebaseDatabase database;
-    private DatabaseReference appointmentHistoryRef;
-    private DatabaseReference appointmentsRef;
-    private DatabaseReference doctorsRef;
-    private DatabaseReference hospitalsRef;
+    private DatabaseReference appointmentHistoryRef, appointmentsRef, doctorsRef, hospitalsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

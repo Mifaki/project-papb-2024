@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,9 +23,7 @@ import com.mobile.petkuy.model.DoctorDetails;
 import com.mobile.petkuy.model.HospitalDetails;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,10 +32,9 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView recyclerView;
     private TextView noResultsText;
     private List<DoctorDetails> doctorList, filteredDoctorList;
-    private FirebaseDatabase database;
     private MutableLiveData<String> searchQuery = new MutableLiveData<>();
-    private DatabaseReference doctorsRef;
-    private DatabaseReference hospitalsRef;
+    private FirebaseDatabase database;
+    private DatabaseReference doctorsRef, hospitalsRef;
     private DoctorListAdapter doctorListAdapter;
 
     @Override
@@ -59,12 +55,10 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(doctorListAdapter);
 
-
         database = FirebaseDatabase.getInstance("https://petkuy-89899-default-rtdb.asia-southeast1.firebasedatabase.app/");
         doctorsRef = database.getReference("doctors");
         hospitalsRef = database.getReference("hospitals");
 
-        // Setting up SearchView listener
         svSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -78,7 +72,6 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        // Observing changes in search query
         searchQuery.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String query) {
@@ -86,13 +79,10 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        // Fetch data from Firebase
         fetchDataFromFirebase();
     }
 
-    // Method to fetch data from Firebase
     private void fetchDataFromFirebase() {
-        // Fetch hospitals first
         hospitalsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -104,7 +94,6 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
                     }
                 }
 
-                // Now, fetch doctors and associate them with their hospital details
                 doctorsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -156,7 +145,6 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         checkEmptyList();
     }
 
-    // Method to check if the filtered list is empty
     private void checkEmptyList() {
         if (filteredDoctorList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
