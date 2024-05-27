@@ -2,8 +2,6 @@ package com.mobile.petkuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,23 +11,22 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.tabs.TabLayout;
-import com.mobile.petkuy.utils.SpacingItemDecoder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mobile.petkuy.model.DoctorDetails;
+import com.mobile.petkuy.model.HospitalDetails;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
+import java.util.Map;
 
 public class DoctorListActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,17 +34,12 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
     private SearchView svSearchBar;
     private RecyclerView recyclerView;
     private TextView noResultsText;
-    private List<Doctor> doctorList, filteredDoctorList, catDoctors, chickenDoctors, livestockDoctors;
-    private DoctorListAdapter doctorListAdapter;
-    private DoctorRepository doctorRepository;
+    private List<DoctorDetails> doctorList, filteredDoctorList;
+    private FirebaseDatabase database;
     private MutableLiveData<String> searchQuery = new MutableLiveData<>();
-    private FrameLayout flDoctorCategory;
-    private TabLayout tlDoctorCatgoryTab;
-
-    interface DoctorRequest {
-        @GET("/Doctor/read.php")
-        Call<List<Doctor>> getDoctor();
-    }
+    private DatabaseReference doctorsRef;
+    private DatabaseReference hospitalsRef;
+    private DoctorListAdapter doctorListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,44 +49,22 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         btBack = findViewById(R.id.btBack);
         svSearchBar = findViewById(R.id.svSearchBar);
         noResultsText = findViewById(R.id.tvNoResult);
-        flDoctorCategory = findViewById(R.id.flDoctorCategory);
-        tlDoctorCatgoryTab = findViewById(R.id.tlDoctorCategoryTab);
+        recyclerView = findViewById(R.id.rvDoctorList);
 
         btBack.setOnClickListener(this);
 
         filteredDoctorList = new ArrayList<>();
-        catDoctors = new ArrayList<>();
-        chickenDoctors = new ArrayList<>();
-        livestockDoctors = new ArrayList<>();
+        doctorList = new ArrayList<>();
+        doctorListAdapter = new DoctorListAdapter(filteredDoctorList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(doctorListAdapter);
 
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.flDoctorCategory, new DoctorCatFragment(catDoctors))
-                .addToBackStack(null)
-                .commit();
+        database = FirebaseDatabase.getInstance("https://petkuy-89899-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        doctorsRef = database.getReference("doctors");
+        hospitalsRef = database.getReference("hospitals");
 
-        doctorRepository = new DoctorRepository(getApplication());
-        doctorRepository.getAllDoctors().observe(this, new Observer<List<Doctor>>() {
-            @Override
-            public void onChanged(List<Doctor> doctors) {
-                catDoctors.clear();
-                chickenDoctors.clear();
-                livestockDoctors.clear();
-                for (Doctor doctor : doctors) {
-                    switch (doctor.getCategory()) {
-                        case "Kucing":
-                            catDoctors.add(doctor);
-                            break;
-                        case "Ayam":
-                            chickenDoctors.add(doctor);
-                            break;
-                        case "Hewan Ternak":
-                            livestockDoctors.add(doctor);
-                            break;
-                    }
-                }
-            }
-        });
-
+        // Setting up SearchView listener
         svSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -107,6 +77,8 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
                 return true;
             }
         });
+
+        // Observing changes in search query
         searchQuery.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String query) {
@@ -114,117 +86,91 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        fetchAndInsertData();
-
-        tlDoctorCatgoryTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                Fragment fragment = null;
-                switch (tab.getPosition()) {
-                    case 0:
-                        fragment = new DoctorCatFragment(catDoctors);
-                        break;
-                    case 1:
-                        fragment = new DoctorLiveStockFragment(livestockDoctors);
-                        break;
-                    case 2:
-                        fragment = new DoctorChickenFragment(chickenDoctors);
-                        break;
-                }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.flDoctorCategory, fragment)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        // Fetch data from Firebase
+        fetchDataFromFirebase();
     }
 
-    public void fetchAndInsertData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        DoctorRequest apiCall = retrofit.create(DoctorRequest.class);
-        apiCall.getDoctor().enqueue(new Callback<List<Doctor>>() {
+    // Method to fetch data from Firebase
+    private void fetchDataFromFirebase() {
+        // Fetch hospitals first
+        hospitalsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onResponse(Call<List<Doctor>> call, Response<List<Doctor>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    doctorList = response.body();
-                    doctorRepository.deleteAllDoctors();
-                    for (Doctor doctor : doctorList) {
-                        doctorRepository.insert(doctor);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<HospitalDetails> hospitalList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    HospitalDetails hospital = snapshot.getValue(HospitalDetails.class);
+                    if (hospital != null) {
+                        hospitalList.add(hospital);
                     }
-                    searchDoctor(searchQuery.getValue());
-                } else {
-                    Toast.makeText(DoctorListActivity.this, "Response kosong atau terjadi kesalahan", Toast.LENGTH_SHORT).show();
                 }
+
+                // Now, fetch doctors and associate them with their hospital details
+                doctorsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            DoctorDetails doctor = snapshot.getValue(DoctorDetails.class);
+                            if (doctor != null) {
+                                // Find the hospital details for this doctor
+                                for (HospitalDetails hospital : hospitalList) {
+                                    if (hospital.getId() == doctor.getHospital_id()) {
+                                        doctor.setHospitalDetails(hospital);
+                                        doctorList.add(doctor);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        searchDoctor(searchQuery.getValue());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("Firebase", "Failed to fetch doctors: " + databaseError.getMessage());
+                    }
+                });
             }
 
             @Override
-            public void onFailure(Call<List<Doctor>> call, Throwable t) {
-                Toast.makeText(DoctorListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Firebase", "Failed to fetch hospitals: " + databaseError.getMessage());
             }
         });
     }
 
-    public void searchDoctor(String query) {
+    private void searchDoctor(String query) {
         filteredDoctorList.clear();
-        List<Doctor> filteredCatDoctors = new ArrayList<>();
-        List<Doctor> filteredChickenDoctors = new ArrayList<>();
-        List<Doctor> filteredLivestockDoctors = new ArrayList<>();
 
         if (doctorList != null) {
             if (TextUtils.isEmpty(query)) {
-                filteredCatDoctors.addAll(catDoctors);
-                filteredChickenDoctors.addAll(chickenDoctors);
-                filteredLivestockDoctors.addAll(livestockDoctors);
+                filteredDoctorList.addAll(doctorList);
             } else {
-                for (Doctor doctor : doctorList) {
+                for (DoctorDetails doctor : doctorList) {
                     if (doctor.getName().toLowerCase().contains(query.toLowerCase())) {
-                        switch (doctor.getCategory()) {
-                            case "Kucing":
-                                filteredCatDoctors.add(doctor);
-                                break;
-                            case "Ayam":
-                                filteredChickenDoctors.add(doctor);
-                                break;
-                            case "Hewan Ternak":
-                                filteredLivestockDoctors.add(doctor);
-                                break;
-                        }
+                        filteredDoctorList.add(doctor);
                     }
                 }
             }
         }
-        notifyFragments(filteredCatDoctors, filteredChickenDoctors, filteredLivestockDoctors);
+        doctorListAdapter.notifyDataSetChanged();
+        checkEmptyList();
     }
 
-    private void notifyFragments(List<Doctor> catDoctors, List<Doctor> chickenDoctors, List<Doctor> livestockDoctors) {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.flDoctorCategory);
-        if (fragment instanceof DoctorCatFragment) {
-            ((DoctorCatFragment) fragment).updateDoctors(catDoctors);
-        } else if (fragment instanceof DoctorChickenFragment) {
-            ((DoctorChickenFragment) fragment).updateDoctors(chickenDoctors);
-        } else if (fragment instanceof DoctorLiveStockFragment) {
-            ((DoctorLiveStockFragment) fragment).updateDoctors(livestockDoctors);
+    // Method to check if the filtered list is empty
+    private void checkEmptyList() {
+        if (filteredDoctorList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            noResultsText.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noResultsText.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btBack) {
             finish();
-            return;
         }
     }
 }

@@ -9,18 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mobile.petkuy.model.DoctorDetails;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ViewHolder> {
 
-    private List<Doctor> doctorList;
+    private List<DoctorDetails> doctorList;
 
-    public DoctorListAdapter(List<Doctor> doctorList) {
+    public DoctorListAdapter(List<DoctorDetails> doctorList) {
         this.doctorList = doctorList;
     }
 
-    public void setData(List<Doctor> doctorList) {
+    public void setData(List<DoctorDetails> doctorList) {
         this.doctorList = doctorList;
         notifyDataSetChanged();
     }
@@ -34,7 +36,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Doctor doctor = doctorList.get(position);
+        DoctorDetails doctor = doctorList.get(position);
         holder.bind(doctor);
     }
     @Override
@@ -56,12 +58,12 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
             addressTextView = itemView.findViewById(R.id.tvAddress);
         }
 
-        public void bind(Doctor doctor) {
+        public void bind(DoctorDetails doctor) {
             doctorNameTextView.setText(doctor.getName());
             doctorImageView.setImageResource(R.drawable.doctor_4);
-            petCategoryTextView.setText(doctor.getCategory());
-            hospitalTextView.setText(doctor.getHospital_name());
-            addressTextView.setText(doctor.getHospital_address());
+            petCategoryTextView.setText(doctor.getSpecialities());
+            hospitalTextView.setText(doctor.getHospitalDetails().getName());
+            addressTextView.setText(doctor.getHospitalDetails().getAddress());
         }
     }
 }

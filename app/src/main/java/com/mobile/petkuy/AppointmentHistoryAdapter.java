@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mobile.petkuy.model.AppointmentHistory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +39,9 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentH
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AppointmentHistory riwayatJanji = riwayatJanjiList.get(position);
         holder.doctorImageView.setImageResource(R.drawable.doctor_1);
-        holder.doctorNameTextView.setText(riwayatJanji.getDoctor_name());
-        holder.petTextView.setText(riwayatJanji.getDoctor_category());
-        holder.hospitalTextView.setText(riwayatJanji.getDoctor_hospital_address());
+        holder.doctorNameTextView.setText(riwayatJanji.getDoctorDetails().getName());
+        holder.petTextView.setText(riwayatJanji.getDoctorDetails().getSpecialities());
+        holder.hospitalTextView.setText(riwayatJanji.getHospitalDetails().getName());
     }
 
     @Override
