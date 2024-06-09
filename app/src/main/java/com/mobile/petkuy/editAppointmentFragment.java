@@ -60,4 +60,3 @@ public class editAppointmentFragment extends Fragment {
         mListener = listener;
     }
 }
-
