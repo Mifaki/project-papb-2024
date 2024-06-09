@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class listsAppointment extends AppCompatActivity {
     private TextView tvSelectedDate;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private ImageView doctorImageView;
     private appAdapter AA;
 
     @Override

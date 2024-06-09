@@ -7,22 +7,21 @@ public class Doctor {
     private String picture;
     private int price;
     private String specialities;
+    private int imageResourceId;
 
-    // No-argument constructor
     public Doctor() {
     }
 
-    // Parameterized constructor (optional)
-    public Doctor(int hospital_id, int id, String name, String picture, int price, String specialities) {
+    public Doctor(int hospital_id, int id, String name, String picture, int price, String specialities, int imageResourceId) {
         this.hospital_id = hospital_id;
         this.id = id;
         this.name = name;
         this.picture = picture;
         this.price = price;
         this.specialities = specialities;
+        this.imageResourceId = imageResourceId;
     }
 
-    // Getters and setters
     public int getHospital_id() {
         return hospital_id;
     }
@@ -69,6 +68,14 @@ public class Doctor {
 
     public void setSpecialities(String specialities) {
         this.specialities = specialities;
+    }
+
+    public int getImageResourceId() {
+        return imageResourceId;
+    }
+
+    public void setImageResourceId(int imageResourceId) {
+        this.imageResourceId = imageResourceId;
     }
 
     @Override

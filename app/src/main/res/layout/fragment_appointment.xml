@@ -7,7 +7,6 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="0dp">
 
-
     <FrameLayout
         android:id="@+id/flTanggal"
         android:layout_width="match_parent"
@@ -111,7 +110,6 @@
             android:text="15:30"
             android:textAppearance="@style/bold_sm"
             android:textColor="@color/primary_700" />
-
 
     </FrameLayout>
 

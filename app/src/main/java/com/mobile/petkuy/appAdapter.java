@@ -101,11 +101,17 @@ public class appAdapter extends RecyclerView.Adapter<appAdapter.VH> {
         holder.tvSpesialis.setText(doctor.getSpecialities());
         holder.tvJanji.setText(appointment.getAppointment_date());
 
+        int imageResourceId = context.getResources().getIdentifier(doctor.getPicture(), "drawable", context.getPackageName());
+        if (imageResourceId != 0) {
+            holder.DoctorApp.setImageResource(imageResourceId);
+        }
+
         holder.btUbah.setOnClickListener(v -> {
             String doktor = holder.tvDokter.getText().toString();
             String spesialis = doctor.getSpecialities();
             String lokasi = holder.tvLokasi.getText().toString();
             String janji = holder.tvJanji.getText().toString();
+            String imageResourceIdStr = doctor.getPicture();
 
             Intent intent = new Intent(context, doctorsAppointment.class);
             Bundle bundle = new Bundle();
@@ -113,26 +119,10 @@ public class appAdapter extends RecyclerView.Adapter<appAdapter.VH> {
             bundle.putString("SPESIALIS", spesialis);
             bundle.putString("LOKASI", lokasi);
             bundle.putString("JANJI", janji);
+            bundle.putString("IV_DOKTOR", imageResourceIdStr);
             intent.putExtras(bundle);
             context.startActivity(intent);
         });
-
-//        holder.btBayar.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, PembayaranActivity.class);
-//            context.startActivity(intent);
-//        });
-
-        if (context instanceof Activity) {
-            Intent intent = ((Activity) context).getIntent();
-            Bundle extras = intent.getExtras();
-            if (extras != null) {
-                String selectedDate = extras.getString("selectedDate");
-                String selectedTime = extras.getString("selectedTime");
-                holder.tvSelectedDate.setText(String.format("%s %s", selectedDate, selectedTime));
-            } else {
-                holder.tvSelectedDate.setText("");
-            }
-        }
     }
 
     @Override

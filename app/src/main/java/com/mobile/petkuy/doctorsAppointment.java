@@ -73,12 +73,21 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
         Intent intent = new Intent(doctorsAppointment.this, listsAppointment.class);
         intent.putExtra("selectedDate", formattedDate);
         intent.putExtra("selectedTime", selectedTime);
+
+        int doctorImageResourceId = R.drawable.doctor_4;
+        intent.putExtra("IV_DOKTOR", doctorImageResourceId);
+
         startActivity(intent);
     }
 
     @Override
     public void onAppointmentItemSelected(String selectedDate, String selectedTime) {
         this.selectedDate = selectedDate;
+        this.selectedTime = selectedTime;
+    }
+
+    @Override
+    public void onAppointmentTimeSelected(String selectedTime) {
         this.selectedTime = selectedTime;
     }
 
