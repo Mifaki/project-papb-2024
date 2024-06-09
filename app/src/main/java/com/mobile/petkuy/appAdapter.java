@@ -14,17 +14,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mobile.petkuy.models.Doctor;
+import com.mobile.petkuy.models.appointmentModel;
+import com.mobile.petkuy.models.hospitalModel;
+
 import java.util.List;
 
-public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class appAdapter extends RecyclerView.Adapter<appAdapter.VH> {
 
     private final Context context;
     private final List<appointmentModel> appointmentModels;
-    protected static SelectListener listener;
+    private final List<Doctor> doctorsModel;
+    private final List<hospitalModel> hospitalsModel;
+    private SelectListener listener;
 
-    public appAdapter(Context context, List<appointmentModel> appointmentModels) {
+    public appAdapter(Context context, List<appointmentModel> appointmentModels, List<Doctor> doctorsModel, List<hospitalModel> hospitalsModel) {
         this.context = context;
         this.appointmentModels = appointmentModels;
+        this.doctorsModel = doctorsModel;
+        this.hospitalsModel = hospitalsModel;
     }
 
     public class VH extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -34,10 +42,10 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final TextView tvLokasi;
         private final TextView tvJanji;
         private final Button btUbah;
-        private TextView tvSelectedDate;
         private final ImageView DoctorApp;
         private final Button btBayar;
         private final Button btBatal;
+        private final TextView tvSelectedDate;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -58,39 +66,49 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            listener.onItemClicked(getAdapterPosition(), v);
+            if (listener != null) {
+                listener.onItemClicked(getAdapterPosition(), v);
+            }
         }
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointmentcard, parent, false);
         return new VH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        appointmentModel appointmentModel = appointmentModels.get(position);
-        VH vh = (VH) holder;
-        vh.DoctorApp.setImageResource(appointmentModel.getImage());
-        vh.tvDokter.setText(appointmentModel.getNamaDok());
-        vh.tvSpesialis.setText(appointmentModel.getSpesialis() + "|" + appointmentModel.getNamaRS());
-        vh.tvLokasi.setText(appointmentModel.getJalanRS());
-        vh.tvJanji.setText(appointmentModel.getJadwal());
+    public void onBindViewHolder(@NonNull VH holder, int position) {
+        appointmentModel appointment = appointmentModels.get(position);
+        Doctor doctor = doctorsModel.get(position);
 
-        vh.btUbah.setOnClickListener(v -> {
-            int ivDoktor = appointmentModel.getImage();
-            String doktor = vh.tvDokter.getText().toString();
-            String spesialis = appointmentModel.getSpesialis().toString();
-            String lokasi = vh.tvLokasi.getText().toString();
-            String janji = vh.tvJanji.getText().toString();
+        // Find the corresponding hospital by id
+        hospitalModel hospital = null;
+        for (hospitalModel h : hospitalsModel) {
+            if (h.getId() == doctor.getHospital_id()) {
+                hospital = h;
+                break;
+            }
+        }
 
-            // Create an intent to start the Checklist activity
+        if (hospital != null) {
+            holder.tvLokasi.setText(hospital.getAddress());
+        }
+
+        holder.tvDokter.setText(doctor.getName());
+        holder.tvSpesialis.setText(doctor.getSpecialities());
+        holder.tvJanji.setText(appointment.getAppointment_date());
+
+        holder.btUbah.setOnClickListener(v -> {
+            String doktor = holder.tvDokter.getText().toString();
+            String spesialis = doctor.getSpecialities();
+            String lokasi = holder.tvLokasi.getText().toString();
+            String janji = holder.tvJanji.getText().toString();
+
             Intent intent = new Intent(context, doctorsAppointment.class);
-            // Pass the extracted data to the Checklist activity using a Bundle
             Bundle bundle = new Bundle();
-            bundle.putInt("IV_DOKTOR", ivDoktor);
             bundle.putString("DOCTOR", doktor);
             bundle.putString("SPESIALIS", spesialis);
             bundle.putString("LOKASI", lokasi);
@@ -99,35 +117,23 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             context.startActivity(intent);
         });
 
-        // Check if there is an intent and extras available
+//        holder.btBayar.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, PembayaranActivity.class);
+//            context.startActivity(intent);
+//        });
+
         if (context instanceof Activity) {
             Intent intent = ((Activity) context).getIntent();
             Bundle extras = intent.getExtras();
-
             if (extras != null) {
-                String selectedDate = intent.getStringExtra("selectedDate");
-                String selectedTime = intent.getStringExtra("selectedTime");
-                vh.tvSelectedDate.setText(selectedDate + " " + selectedTime);
+                String selectedDate = extras.getString("selectedDate");
+                String selectedTime = extras.getString("selectedTime");
+                holder.tvSelectedDate.setText(String.format("%s %s", selectedDate, selectedTime));
             } else {
-                // Clear text if no intent extras available
-                vh.tvSelectedDate.setText("");
+                holder.tvSelectedDate.setText("");
             }
         }
-
-        vh.btBayar.setOnClickListener((v -> {
-            Intent intent = new Intent(context, PembayaranActivity.class);
-            context.startActivity(intent);
-        }));
-
-        vh.btBatal.setOnClickListener((v -> {
-//            Intent intent = new Intent(context, BatalJanji.class);
-//            context.startActivity(intent);
-//
-//            // Perform action on button click
-        }));
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -135,11 +141,10 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void setOnItemClickListener(SelectListener listener) {
-        appAdapter.listener = listener;
+        this.listener = listener;
     }
 
     public interface SelectListener {
         void onItemClicked(int position, View v);
     }
-
 }
