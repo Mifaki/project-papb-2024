@@ -120,10 +120,10 @@ public class appAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }));
 
         vh.btBatal.setOnClickListener((v -> {
-            Intent intent = new Intent(context, BatalJanji.class);
-            context.startActivity(intent);
-
-            // Perform action on button click
+//            Intent intent = new Intent(context, BatalJanji.class);
+//            context.startActivity(intent);
+//
+//            // Perform action on button click
         }));
 
     }

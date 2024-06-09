@@ -22,9 +22,9 @@ public class konfirmasi extends AppCompatActivity {
         btLihatDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(konfirmasi.this, MainActivity.class);
-
-                startActivity(intent);
+//                Intent intent = new Intent(konfirmasi.this, MainActivity.class);
+//
+//                startActivity(intent);
             }
         });
 
