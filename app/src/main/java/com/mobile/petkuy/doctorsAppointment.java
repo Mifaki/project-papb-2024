@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -28,7 +30,6 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctorsdetail);
 
-        // Inisialisasi TextViews
         tvDokter = findViewById(R.id.tvDoc);
         tvSpesialis = findViewById(R.id.tvSpesialis);
         tvLokasi = findViewById(R.id.tvLokasi);
@@ -39,19 +40,6 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
         // Set up Volley request queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mImageLoader = new ImageLoader(requestQueue);
-
-        // Load image from URL
-        String imageUrl = "https://news.unair.ac.id/wp-content/uploads/2022/01/dokter-hewan.jpg";
-        mImageLoader.loadImage(imageUrl, ivDoktor);
-
-        // Check state to decide whether to show editAppointmentFragment
-        if (state != null) {
-            editAppointmentFragment editAppointmentFragment = new editAppointmentFragment();
-            editAppointmentFragment.setOnAppointmentItemSelectedListener(this); // Set this activity as the listener
-            getSupportFragmentManager().beginTransaction().add(R.id.flTanggal, editAppointmentFragment).commit();
-        }else {
-            btSend.setText("Buat Jadwal");
-        }
 
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,16 +53,22 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Remove '\n'
                 String formattedDate = selectedDate.replace("\n", "");
                 state = "1";
-                // Sending data
                 sendDataToAppointment(formattedDate, selectedTime);
             }
         });
+
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            editAppointmentFragment fragment = new editAppointmentFragment();
+            fragment.setOnAppointmentItemSelectedListener(this);
+            fragmentTransaction.replace(R.id.flTanggal, fragment);
+            fragmentTransaction.commit();
+        }
     }
 
-    // Send data to appointment
     private void sendDataToAppointment(String formattedDate, String selectedTime) {
         Intent intent = new Intent(doctorsAppointment.this, listsAppointment.class);
         intent.putExtra("selectedDate", formattedDate);
@@ -92,24 +86,17 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
     protected void onResume() {
         super.onResume();
 
-        // Mendapatkan data yang dikirim dari activity sebelumnya melalui intent
         Intent intent = getIntent();
         if (intent != null) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                // Mendapatkan nama dokter, spesialis, lokasi, dan janji
-                String doktor = bundle.getString("DOCTOR", "");
-                String spesialis = bundle.getString("SPESIALIS", "");
-                String lokasi = bundle.getString("LOKASI", "");
-                int ivDoktorResource = bundle.getInt("IV_DOKTOR");
+            String doktor = intent.getStringExtra("DOCTOR");
+            String spesialis = intent.getStringExtra("SPESIALIS");
+            String lokasi = intent.getStringExtra("LOKASI");
+            int ivDoktorResource = intent.getIntExtra("IV_DOKTOR", R.drawable.doctor_4);
 
-                // Menetapkan nilai-nilai tersebut ke TextViews
-                tvDokter.setText(doktor);
-                tvSpesialis.setText(spesialis);
-                tvLokasi.setText(lokasi);
-                // Set image resource to ImageView
-                ivDoktor.setImageResource(ivDoktorResource);
-            }
+            tvDokter.setText(doktor);
+            tvSpesialis.setText(spesialis);
+            tvLokasi.setText(lokasi);
+            ivDoktor.setImageResource(ivDoktorResource);
         }
     }
 }

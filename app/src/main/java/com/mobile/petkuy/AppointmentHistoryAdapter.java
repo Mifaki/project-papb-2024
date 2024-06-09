@@ -1,5 +1,6 @@
 package com.mobile.petkuy;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.List;
 public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentHistoryAdapter.ViewHolder> {
 
     private List<AppointmentHistory> riwayatJanjiList;
+    private OnItemClickListener onItemClickListener;
 
     public AppointmentHistoryAdapter() {
         this.riwayatJanjiList = new ArrayList<>();
@@ -28,11 +30,15 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentH
         notifyDataSetChanged();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.appointment_history_card, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -49,13 +55,14 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentH
         return riwayatJanjiList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView doctorNameTextView, petTextView, hospitalTextView;
         Button buttonTextView;
         ImageView doctorImageView;
+        OnItemClickListener onItemClickListener;
 
-        public ViewHolder(@NonNull  View itemView) {
+        public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
 
             doctorImageView = itemView.findViewById(R.id.ivDoctorPicture);
@@ -63,11 +70,20 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentH
             petTextView = itemView.findViewById(R.id.tvPetCategory);
             hospitalTextView = itemView.findViewById(R.id.tvHospitalAdress);
             buttonTextView = itemView.findViewById(R.id.btDoctorAppoinment);
+
+            this.onItemClickListener = onItemClickListener;
+            buttonTextView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(getAdapterPosition());
+            }
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 }

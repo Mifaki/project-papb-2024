@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -55,6 +56,18 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(doctorListAdapter);
 
+        doctorListAdapter.setOnItemClickListener(new DoctorListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DoctorDetails doctor) {
+                Intent intent = new Intent(DoctorListActivity.this, doctorsAppointment.class);
+                intent.putExtra("DOCTOR", doctor.getName());
+                intent.putExtra("SPESIALIS", doctor.getSpecialities());
+                intent.putExtra("LOKASI", doctor.getHospitalDetails().getAddress());
+                intent.putExtra("IV_DOKTOR", R.drawable.doctor_4); // assuming you want to pass the same image resource
+                startActivity(intent);
+            }
+        });
+
         database = FirebaseDatabase.getInstance("https://petkuy-89899-default-rtdb.asia-southeast1.firebasedatabase.app/");
         doctorsRef = database.getReference("doctors");
         hospitalsRef = database.getReference("hospitals");
@@ -100,7 +113,6 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             DoctorDetails doctor = snapshot.getValue(DoctorDetails.class);
                             if (doctor != null) {
-                                // Find the hospital details for this doctor
                                 for (HospitalDetails hospital : hospitalList) {
                                     if (hospital.getId() == doctor.getHospital_id()) {
                                         doctor.setHospitalDetails(hospital);

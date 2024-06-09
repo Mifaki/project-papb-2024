@@ -28,7 +28,6 @@ import com.mobile.petkuy.utils.SpacingItemDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -65,6 +64,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         SpacingItemDecoder itemDecorator = new SpacingItemDecoder(16);
         rvRiwayatJanji.addItemDecoration(itemDecorator);
         rvRiwayatJanji.setAdapter(riwayatJanjiAdapter);
+
+        riwayatJanjiAdapter.setOnItemClickListener(new AppointmentHistoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                AppointmentHistory selectedAppointment = riwayatJanjiList.get(position);
+                DoctorDetails doctor = selectedAppointment.getDoctorDetails();
+                HospitalDetails hospital = selectedAppointment.getHospitalDetails();
+
+                Intent intent = new Intent(HomeActivity.this, doctorsAppointment.class);
+                intent.putExtra("DOCTOR", doctor.getName());
+                intent.putExtra("SPESIALIS", doctor.getSpecialities());
+                intent.putExtra("LOKASI", hospital.getAddress());
+                intent.putExtra("IV_DOKTOR", doctor.getPicture());
+                startActivity(intent);
+            }
+        });
 
         database = FirebaseDatabase.getInstance("https://petkuy-89899-default-rtdb.asia-southeast1.firebasedatabase.app/");
         appointmentHistoryRef = database.getReference("appointment_history");
