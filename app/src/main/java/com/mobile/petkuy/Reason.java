@@ -1,5 +1,6 @@
 package com.mobile.petkuy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,33 +20,22 @@ import java.util.HashMap;
 public class Reason extends AppCompatActivity {
     private EditText etAlasanR;
     private EditText etDeskripsiR;
-
     private Button btTambah;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_reason);
         etAlasanR = findViewById(R.id.etAlasanR);
         etDeskripsiR = findViewById(R.id.etDeskripsiR);
 
-
-
-
         btTambah = findViewById(R.id.btTambah);
-
         btTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String Alasan = etAlasanR.getText().toString();
                 String Deskripsi = etDeskripsiR.getText().toString();
-
-
 
                 if(Alasan.isEmpty()){
                     etAlasanR.setError("Alasan tidak boleh kosong");
@@ -55,18 +45,9 @@ public class Reason extends AppCompatActivity {
                     etDeskripsiR.setError("Deskripsi tidak boleh kosong");
                     return;
                 }
-
-
                 TambahKeDatabase(Alasan,Deskripsi);
-
-
             }
         });
-
-
-
-
-
     }
 
     private void TambahKeDatabase(String alasan, String deskripsi) {
@@ -74,11 +55,9 @@ public class Reason extends AppCompatActivity {
         AlasanHashMap.put("Alasan", alasan);
         AlasanHashMap.put("Deskripsi", deskripsi);
 
-
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://petkuy-89899-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         DatabaseReference AlasanRef = database.getReference("Alasan");
-
 
         String key = AlasanRef.push().getKey();
         AlasanHashMap.put("key", key);
@@ -86,22 +65,13 @@ public class Reason extends AppCompatActivity {
         AlasanRef.child(key).setValue(AlasanHashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(Reason.this, "Berhasil", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Reason.this, "Berhasil Membatalkan Janji", Toast.LENGTH_SHORT).show();
                 etAlasanR.getText().clear();
                 etDeskripsiR.getText().clear();
 
-
+                Intent intent = new Intent(Reason.this, HomeActivity.class);
+                startActivity(intent);
             }
-
         });
-
-
-
-
-
-
-
-
-
     }
 }

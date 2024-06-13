@@ -78,10 +78,17 @@ public class listsAppointment extends AppCompatActivity {
 
             @Override
             public void onBatalClicked(int position) {
-                // Handle batal button click
                 data.remove(position);
                 AA.notifyItemRemoved(position);
                 AA.notifyItemRangeChanged(position, data.size());
+
+                int appointmentId = data.get(position).getId();
+
+                Intent intent = new Intent(listsAppointment.this, Reason.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("APPOINTMENT_ID", appointmentId);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
 
             @Override
