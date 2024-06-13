@@ -20,7 +20,7 @@ public class PembayaranBerhasil extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intentListsAppointment = new Intent(context, HomeActivity.class);
+                Intent intentListsAppointment = new Intent(context, listsAppointment.class);
                 startActivity(intentListsAppointment);
                 finish();
             }
