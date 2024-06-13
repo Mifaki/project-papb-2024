@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
-                    android:text="Nama          :"
+                    android:text="Nama          : Afin"
                     android:textSize="15sp" />
 
                 <TextView
@@ -95,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
-                    android:text="No. Hp         :"
+                    android:text="No. Hp         : 087887771586"
                     android:textSize="15sp" />
 
                 <TextView
@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
-                    android:text="Konsultasi   :"
+                    android:text="Konsultasi   : Nutrisions"
                     android:textSize="15sp" />
 
                 <TextView
@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
-                    android:text="Dokter          :"
+                    android:text="Dokter          : Dr. Alice Smith"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -144,7 +144,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/container_bayar"
+                android:id="@+id/bayar"
                 android:layout_width="320dp"
                 android:layout_height="40.34dp"
                 android:layout_gravity="center_horizontal"
@@ -152,7 +152,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="-Rp550.000"
+                android:text="Rp550.000"
                 android:textColor="#FF2B97F9"
                 android:textSize="20dp" />
         </LinearLayout>
