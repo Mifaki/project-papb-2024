@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("DOCTOR", doctor.getName());
                 intent.putExtra("SPESIALIS", doctor.getSpecialities());
                 intent.putExtra("LOKASI", hospital.getAddress());
-                intent.putExtra("IV_DOKTOR", doctor.getPicture());
+                intent.putExtra("IV_DOKTOR_URL", doctor.getPicture());
                 startActivity(intent);
             }
         });

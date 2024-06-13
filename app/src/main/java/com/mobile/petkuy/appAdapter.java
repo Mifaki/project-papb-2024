@@ -3,6 +3,7 @@ package com.mobile.petkuy;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mobile.petkuy.model.Doctor;
 import com.mobile.petkuy.model.appointmentModel;
 import com.mobile.petkuy.model.hospitalModel;
@@ -119,6 +121,12 @@ public class appAdapter extends RecyclerView.Adapter<appAdapter.VH> {
         holder.tvDokter.setText(doctor.getName());
         holder.tvSpesialis.setText(doctor.getSpecialities());
         holder.tvJanji.setText(appointment.getAppointment_date());
+
+        Glide.with(holder.DoctorApp.getContext())
+                .load(doctor.getPicture())
+                .placeholder(R.drawable.doctor_4)
+                .into(holder.DoctorApp);
+
 
         int imageResourceId = context.getResources().getIdentifier(doctor.getPicture(), "drawable", context.getPackageName());
         if (imageResourceId != 0) {

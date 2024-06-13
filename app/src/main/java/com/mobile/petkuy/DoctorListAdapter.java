@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mobile.petkuy.model.DoctorDetails;
 
 import java.util.List;
@@ -81,10 +82,15 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
 
         public void bind(DoctorDetails doctor) {
             doctorNameTextView.setText(doctor.getName());
-            doctorImageView.setImageResource(R.drawable.doctor_4);
             petCategoryTextView.setText(doctor.getSpecialities());
             hospitalTextView.setText(doctor.getHospitalDetails().getName());
             addressTextView.setText(doctor.getHospitalDetails().getAddress());
+
+            Glide.with(doctorImageView.getContext())
+                    .load(doctor.getPicture())
+                    .placeholder(R.drawable.doctor_4)
+                    .into(doctorImageView);
+
             itemView.setTag(doctor);
         }
     }

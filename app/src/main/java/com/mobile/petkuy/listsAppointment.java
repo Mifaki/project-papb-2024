@@ -106,6 +106,7 @@ public class listsAppointment extends AppCompatActivity {
                 bundle.putString("LOKASI", lokasi);
                 bundle.putString("JANJI", janji);
                 bundle.putString("IV_DOKTOR", imageResourceIdStr);
+                bundle.putString("TYPE", "EDIT");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

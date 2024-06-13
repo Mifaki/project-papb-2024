@@ -1,6 +1,5 @@
 package com.mobile.petkuy;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mobile.petkuy.model.AppointmentHistory;
 
 import java.util.ArrayList;
@@ -44,7 +44,13 @@ public class AppointmentHistoryAdapter extends RecyclerView.Adapter<AppointmentH
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AppointmentHistory riwayatJanji = riwayatJanjiList.get(position);
-        holder.doctorImageView.setImageResource(R.drawable.doctor_1);
+        String imageUrl = riwayatJanji.getDoctorDetails().getPicture();
+
+        Glide.with(holder.itemView.getContext())
+                .load(imageUrl)
+                .placeholder(R.drawable.doctor_4)
+                .into(holder.doctorImageView);
+
         holder.doctorNameTextView.setText(riwayatJanji.getDoctorDetails().getName());
         holder.petTextView.setText(riwayatJanji.getDoctorDetails().getSpecialities());
         holder.hospitalTextView.setText(riwayatJanji.getHospitalDetails().getName());

@@ -63,7 +63,7 @@ public class DoctorListActivity extends AppCompatActivity implements View.OnClic
                 intent.putExtra("DOCTOR", doctor.getName());
                 intent.putExtra("SPESIALIS", doctor.getSpecialities());
                 intent.putExtra("LOKASI", doctor.getHospitalDetails().getAddress());
-                intent.putExtra("IV_DOKTOR", R.drawable.doctor_4); // assuming you want to pass the same image resource
+                intent.putExtra("IV_DOKTOR_URL", doctor.getPicture());
                 startActivity(intent);
             }
         });

@@ -1,5 +1,6 @@
 package com.mobile.petkuy;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Objects;
 
 public class doctorsAppointment extends AppCompatActivity implements editAppointmentFragment.OnAppointmentItemSelectedListener {
     protected static String state = null;
@@ -90,6 +94,7 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
         this.selectedTime = selectedTime;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
         super.onResume();
@@ -99,12 +104,22 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
             String doktor = intent.getStringExtra("DOCTOR");
             String spesialis = intent.getStringExtra("SPESIALIS");
             String lokasi = intent.getStringExtra("LOKASI");
-            int ivDoktorResource = intent.getIntExtra("IV_DOKTOR", R.drawable.doctor_4);
+            String ivDoktorUrl = intent.getStringExtra("IV_DOKTOR_URL");
 
             tvDokter.setText(doktor);
             tvSpesialis.setText(spesialis);
             tvLokasi.setText(lokasi);
-            ivDoktor.setImageResource(ivDoktorResource);
+
+            if (ivDoktorUrl != null) {
+                Glide.with(this)
+                        .load(ivDoktorUrl)
+                        .into(ivDoktor);
+            }
+
+            String type = intent.getStringExtra("TYPE");
+            if (Objects.equals(type, "EDIT")) {
+                btSend.setText("Ubah Jadwal");
+            }
         }
     }
 }
