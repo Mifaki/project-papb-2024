@@ -55,9 +55,53 @@ public class listsAppointment extends AppCompatActivity {
         loadDoctorsData();
         loadHospitalsData();
         loadData();
-        AA.setOnItemClickListener((position, v) -> {
-            data.remove(position);
-            AA.notifyDataSetChanged();
+        AA.setOnItemClickListener(new appAdapter.SelectListener() {
+            @Override
+            public void onItemClicked(int position, View v) {
+                // tidak ada yang terjadi
+            }
+
+            @Override
+            public void onBayarClicked(int position) {
+                int appointmentId = data.get(position).getId();
+                String doktor = doctorsData.get(position).getName();
+                String speciality = doctorsData.get(position).getSpecialities();
+
+                Intent intent = new Intent(listsAppointment.this, PembayaranActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("APPOINTMENT_ID", appointmentId);
+                bundle.putString("DOCTOR_NAME", doktor);
+                bundle.putString("DOCTOR_SPECIALITY", speciality);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onBatalClicked(int position) {
+                // Handle batal button click
+                data.remove(position);
+                AA.notifyItemRemoved(position);
+                AA.notifyItemRangeChanged(position, data.size());
+            }
+
+            @Override
+            public void onUbahClicked(int position) {
+                String doktor = doctorsData.get(position).getName();
+                String spesialis = doctorsData.get(position).getSpecialities();
+                String lokasi = hospitalsData.get(position).getAddress();
+                String janji = data.get(position).getAppointment_date();
+                String imageResourceIdStr = doctorsData.get(position).getPicture();
+
+                Intent intent = new Intent(listsAppointment.this, doctorsAppointment.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("DOCTOR", doktor);
+                bundle.putString("SPESIALIS", spesialis);
+                bundle.putString("LOKASI", lokasi);
+                bundle.putString("JANJI", janji);
+                bundle.putString("IV_DOKTOR", imageResourceIdStr);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
         });
 
         View appointmentCardView = getLayoutInflater().inflate(R.layout.appointmentcard, null);

@@ -25,11 +25,9 @@ public class KonfirmasiPembayaranActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_konfirmasi_pembayaran);
 
-        // Inisialisasi Firebase Database
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://petkuy-89899-default-rtdb.asia-southeast1.firebasedatabase.app");
         databaseReference = firebaseDatabase.getReference();
 
-        // Mendapatkan referensi TextView untuk menampilkan data
         TextView textViewNama = findViewById(R.id.nama);
         TextView textViewNoHp = findViewById(R.id.no_hp);
         TextView textViewKonsultasi = findViewById(R.id.konsultasi);
@@ -38,9 +36,14 @@ public class KonfirmasiPembayaranActivity extends AppCompatActivity {
 
         Button KonfirmasiPembayaranButton = findViewById(R.id.konfirmasi_pembayaran_button);
 
-        String appointmentId = "2";
+        int appointmentId = getIntent().getIntExtra("APPOINTMENT_ID", -1);
+        String doctorName = getIntent().getStringExtra("DOCTOR_NAME");
+        String speciality = getIntent().getStringExtra("DOCTOR_SPECIALITY");
 
-        DatabaseReference appointmentsRef = firebaseDatabase.getReference().child("appointments").child(appointmentId);
+        textViewKonsultasi.setText("Konsultasi   : " + speciality);
+        textViewDokter.setText("Dokter          : " + doctorName);
+
+        DatabaseReference appointmentsRef = firebaseDatabase.getReference().child("appointments").child(String.valueOf(appointmentId));
         appointmentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -49,9 +52,6 @@ public class KonfirmasiPembayaranActivity extends AppCompatActivity {
 
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
-
-
                         if (userId != null) {
                             DatabaseReference usersRef = firebaseDatabase.getReference().child("users").child(userId);
 
@@ -81,40 +81,6 @@ public class KonfirmasiPembayaranActivity extends AppCompatActivity {
                     }
 
                 }
-                if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
-                        if (doctorId != null) {
-                            DatabaseReference doctorsRef = firebaseDatabase.getReference().child("doctors").child(doctorId);
-                            doctorsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        String doctorName = snapshot.child("name").getValue(String.class);
-                                        String speciality = snapshot.child("specialities").getValue(String.class);
-                                        String price = String.valueOf(snapshot.child("price").getValue(Long.class));
-                                        textViewKonsultasi.setText("Konsultasi   : " + speciality);
-                                        textViewDokter.setText("Dokter          : " + doctorName);
-                                        textViewPrice.setText("Rp " + price);
-
-                                    } else {
-                                        Log.e("Firebase Error", "Doctor data not found");
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    Log.e("Firebase Error", "Error fetching doctor data", error.toException());
-                                }
-                            });
-                        } else {
-                            Log.e("Firebase Error", "Doctor ID is null");
-                        }
-                    }
-
-                }
-
-
             }
 
             @Override

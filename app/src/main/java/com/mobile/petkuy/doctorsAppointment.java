@@ -37,7 +37,6 @@ public class doctorsAppointment extends AppCompatActivity implements editAppoint
         btBack = findViewById(R.id.btBack);
         btSend = findViewById(R.id.btSend);
 
-        // Set up Volley request queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         mImageLoader = new ImageLoader(requestQueue);
 

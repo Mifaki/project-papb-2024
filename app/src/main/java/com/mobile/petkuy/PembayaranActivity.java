@@ -12,13 +12,17 @@ public class PembayaranActivity extends AppCompatActivity {
     private int paymentMethodId;
     private int appointmentId;
 
+    private String doctorName, doctorSpeciality;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pembayaran);
 
         Button bayarButton = findViewById(R.id.bayar_2);
-        appointmentId = getIntent().getIntExtra("appointment_id", -1);
+        appointmentId = getIntent().getIntExtra("APPOINTMENT_ID", -1);
+        doctorName = getIntent().getStringExtra("DOCTOR_NAME");
+        doctorSpeciality = getIntent().getStringExtra("DOCTOR_SPECIALITY");
 
         findViewById(R.id.gopay_rb).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +43,10 @@ public class PembayaranActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, KonfirmasiPembayaranActivity.class);
-                intent.putExtra("appointment_id", appointmentId);
-                intent.putExtra("payment_method_id", paymentMethodId);
+                intent.putExtra("APPOINTMENT_ID", appointmentId);
+                intent.putExtra("DOCTOR_NAME", doctorName);
+                intent.putExtra("DOCTOR_SPECIALITY", doctorSpeciality);
+                intent.putExtra("PAYMENT_METHOD_ID", paymentMethodId);
                 startActivity(intent);
             }
         });

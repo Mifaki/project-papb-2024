@@ -58,10 +58,30 @@ public class appAdapter extends RecyclerView.Adapter<appAdapter.VH> {
             this.btBayar = itemView.findViewById(R.id.btBayar);
             this.btBatal = itemView.findViewById(R.id.btLihatDaftar);
             this.tvSelectedDate = itemView.findViewById(R.id.tvJanji);
-            itemView.setOnClickListener(this);
-            btUbah.setOnClickListener(this);
-            btBayar.setOnClickListener(this);
-            btBatal.setOnClickListener(this);
+
+            btBayar.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onBayarClicked(getAdapterPosition());
+                }
+            });
+
+            btBatal.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onBatalClicked(getAdapterPosition());
+                }
+            });
+
+            btUbah.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onUbahClicked(getAdapterPosition());
+                }
+            });
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClicked(getAdapterPosition(), v);
+                }
+            });
         }
 
         @Override
@@ -84,7 +104,6 @@ public class appAdapter extends RecyclerView.Adapter<appAdapter.VH> {
         appointmentModel appointment = appointmentModels.get(position);
         Doctor doctor = doctorsModel.get(position);
 
-        // Find the corresponding hospital by id
         hospitalModel hospital = null;
         for (hospitalModel h : hospitalsModel) {
             if (h.getId() == doctor.getHospital_id()) {
@@ -136,5 +155,9 @@ public class appAdapter extends RecyclerView.Adapter<appAdapter.VH> {
 
     public interface SelectListener {
         void onItemClicked(int position, View v);
+        void onBayarClicked(int position);
+        void onBatalClicked(int position);
+        void onUbahClicked(int position);
     }
+
 }
